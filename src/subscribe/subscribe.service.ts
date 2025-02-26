@@ -8,8 +8,8 @@ import { Model } from 'mongoose';
 export class SubscribeService {
     constructor(@InjectModel("subscribe") private readonly subscribeModel: Model<Subscribe>) {}
 
-    subscribe(createSubscribeDto: CreateSubscribeDto) {
-        const subscribe = new this.subscribeModel(createSubscribeDto);
-        return subscribe.save();
+    subscribe(email: string) {
+        this.subscribeModel.create({email, date: new Date()});
+        return {message: "success"};
     }
 }

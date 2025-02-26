@@ -3,11 +3,8 @@ import { Order, OrderSchema } from "./order.schema";
 
 @Schema()
 export class Orders {
-    @Prop({ type: OrderSchema ,required: true })
-    productId: Order[]
-
-    @Prop({ required: true })
-    quantity: Number
+    @Prop({ type: [OrderSchema] ,required: true })
+    orders: Order[]
 
     @Prop({ required: true })
     totalPrice: Number

@@ -14,8 +14,9 @@ export class OrdersService {
   ) { }
   
 
-  create(createOrderDto: CreateOrderDto): Promise<Orders> {
-    return this.OrdersModel.create(createOrderDto);
+  create(createOrderDto) {
+    this.OrdersModel.create(createOrderDto)
+    return { message: 'Order created' };
   }
 
   findAll(): Promise<Orders[]> {

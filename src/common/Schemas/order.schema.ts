@@ -1,18 +1,21 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
-@Schema()
+@Schema({ _id: false })
 export class Order {
     @Prop({ required: true })
     name: string;
+
+    @Prop({ required: true })
+    img: string;
     
     @Prop({ required: true })
-    totalPrice: number;
+    price: number;
+
+    @Prop({ required: true })
+    numberReviews: number;
 
     @Prop({ required: true })
     quantity: number;
-
-    @Prop({ required: true })
-    date: Date;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order); 

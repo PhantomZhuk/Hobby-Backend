@@ -12,7 +12,7 @@ export class OrdersController {
   @ApiResponse({ status: 200, type: CreateOrderDto })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @Post("/create")
-  create(@Body() createOrderDto: CreateOrderDto) {
+  create(@Body() createOrderDto) {
     return this.ordersService.create(createOrderDto);
   }
 

@@ -1,21 +1,23 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateOrderDto {
-    @ApiProperty({ example: 'x6c87b67v87dxf678', description: 'productId' })
-    @IsNotEmpty()
-    @IsString()
-    productId: string
+interface Product {
+    id: string,
+    name: string,
+    price: number
+    quantity: number
+}
 
-    @ApiProperty({ example: '1', description: 'quantity' })
+export class CreateOrderDto {
+    @ApiProperty({ example: '[{"id": "1", "name": "Product 1", "price": 10, "quantity": 2}]', description: 'products' })
     @IsNotEmpty()
     @IsString()
-    quantity: string
+    products: Product[]
 
     @ApiProperty({ example: '1', description: 'totalPrice' })
     @IsNotEmpty()
     @IsString()
-    totalPrice: string
+    totalPrice: number
 
     @ApiProperty({ example: '01.01.2025', description: 'date' })
     @IsNotEmpty()

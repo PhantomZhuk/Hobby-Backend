@@ -12,6 +12,6 @@ export class SubscribeController {
   @ApiResponse({ status: 400 })
   @Post()
   subscribe(@Body() createSubscribeDto: CreateSubscribeDto) {
-    return this.subscribeService.subscribe(createSubscribeDto);
+    return this.subscribeService.subscribe(createSubscribeDto.email);
   }
 }
