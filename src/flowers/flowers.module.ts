@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { FlowersService } from './flowers.service';
 import { FlowersController } from './flowers.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Flowers, FlowersSchema } from 'src/common/Schemas/flowers.shema';
+import { Flowers, FlowersSchema } from 'src/common/Schemas/flowers.schema';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: Flowers.name, schema: FlowersSchema }])],
