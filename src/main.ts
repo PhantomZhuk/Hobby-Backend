@@ -12,10 +12,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cors(
     {
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      allowedHeaders: 'Content-Type, Accept, Authorization',
-      credentials: true
+      origin: "http://localhost:5173",
+      credentials: true,
     }
   ))
     .use(helmet({
@@ -24,10 +22,7 @@ async function bootstrap() {
       referrerPolicy: { policy: 'no-referrer' },
     }))
     .useGlobalPipes(new ValidationPipe({ whitelist: true }))
-    .use(cookieParser())
-    .enableCors({
-      origin: '*',
-    });
+    .use(cookieParser());
   const config = new DocumentBuilder()
     .setTitle('🔥 Hobby API') 
     .setDescription('Documentation API for Hobby – flower shop')
