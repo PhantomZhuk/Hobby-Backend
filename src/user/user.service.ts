@@ -10,22 +10,19 @@ import * as jwt from 'jsonwebtoken';
 export class UserService {
     constructor(@InjectModel("User") private readonly userModel: Model<User>) { }
 
-    async create(createUserDto: CreateUserDto, refreshToken: string) {
+    async create(createUserDto: CreateUserDto) {
         const users = await this.userModel.find().exec();
 
         if (users.find(user => user.email === createUserDto.email)) {
             throw new Error("User already exists");
         } else {
             createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-            const user = await this.userModel.create({
-                ...createUserDto,
-                refreshToken
-            });
+            const user = await this.userModel.create(createUserDto);
             return user;
         }
     }
 
-    async login(email: string, password: string, refreshToken: string) {
+    async login(email: string, password: string) {
         const user = await this.userModel.findOne({ email }).exec();
 
         if (!user) {
@@ -38,25 +35,9 @@ export class UserService {
             throw new Error("Invalid password");
         }
 
-        user.refreshToken = refreshToken;
-
         await user.save();
 
         return user;
-    }
-
-    async logout(email: string) {
-        const user = await this.userModel.findOne({ email }).exec();
-
-        if (!user) {
-            throw new Error("User not found");
-        }
-
-        user.refreshToken = "";
-
-        await user.save();
-
-        return { message: "success" };
     }
 
     async verifyRefreshToken(refreshToken: string): Promise<boolean> {
