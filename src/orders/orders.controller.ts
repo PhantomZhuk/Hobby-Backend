@@ -23,4 +23,20 @@ export class OrdersController {
   findAll() {
     return this.ordersService.findAll();
   }
+
+  @ApiOperation({ summary: 'Update order' })
+  @ApiResponse({ status: 200, type: CreateOrderDto })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @Post("/update")
+  update(@Body() updateOrderDto: UpdateOrderDto) {
+    return this.ordersService.update(updateOrderDto);
+  }
+
+  @ApiOperation({ summary: 'Delete order' })
+  @ApiResponse({ status: 200, type: CreateOrderDto })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @Delete("/delete/:id")
+  delete(@Param("id") id: string) {
+    return this.ordersService.delete(id);
+  }
 }

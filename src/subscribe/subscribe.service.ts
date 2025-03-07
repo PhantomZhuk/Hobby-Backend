@@ -12,4 +12,8 @@ export class SubscribeService {
         this.subscribeModel.create({email, date: new Date()});
         return {message: "success"};
     }
+
+    findAll() {
+        return this.subscribeModel.find();
+    }
 }

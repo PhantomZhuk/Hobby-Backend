@@ -14,4 +14,12 @@ export class SubscribeController {
   subscribe(@Body() createSubscribeDto: CreateSubscribeDto) {
     return this.subscribeService.subscribe(createSubscribeDto.email);
   }
+
+  @ApiOperation({ summary: 'Get all subscribers' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 400 })
+  @Get()
+  findAll() {
+    return this.subscribeService.findAll();
+  }
 }

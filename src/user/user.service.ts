@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/common/Schemas/user.schema';
@@ -11,13 +11,19 @@ export class UserService {
     constructor(@InjectModel("User") private readonly userModel: Model<User>) { }
 
     async create(createUserDto: CreateUserDto) {
-        const users = await this.userModel.find().exec();
+        console.log(createUserDto);
+        const existingUser = await this.userModel.findOne({ email: createUserDto.email }).exec();
 
-        if (users.find(user => user.email === createUserDto.email)) {
-            throw new Error("User already exists");
+        console.log(existingUser);
+        if (existingUser) {
+            console.log('User already exists');
+            throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
         } else {
+            console.log('User does not exist');
             createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+            console.log(createUserDto);
             const user = await this.userModel.create(createUserDto);
+            console.log(user);
             return user;
         }
     }
@@ -26,13 +32,13 @@ export class UserService {
         const user = await this.userModel.findOne({ email }).exec();
 
         if (!user) {
-            throw new Error("User not found");
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            throw new Error("Invalid password");
+            throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
         }
 
         await user.save();
@@ -57,11 +63,15 @@ export class UserService {
         const user = await this.userModel.findOne({ email }).exec();
 
         if (!user) {
-            throw new Error("User not found");
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
 
-        this.userModel.findOneAndUpdate({ email }, updateUserDto).exec();
+        await this.userModel.findOneAndUpdate({ email }, updateUserDto).exec();
 
         return user;
+    }
+
+    findAll() {
+        return this.userModel.find().exec();
     }
 }
