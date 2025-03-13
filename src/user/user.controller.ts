@@ -36,14 +36,11 @@ export class UserController {
   @Post('create')
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     try {
-      console.log(createUserDto);
       await this.userService.create(createUserDto);
       const { accessToken, refreshToken } = this.generateTokens(createUserDto.email);
       await this.setAuthCookies(res, accessToken, refreshToken);
-      console.log('User created successfully');
       return res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
-      console.log(error);
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
   }

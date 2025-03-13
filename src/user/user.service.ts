@@ -11,19 +11,13 @@ export class UserService {
     constructor(@InjectModel("User") private readonly userModel: Model<User>) { }
 
     async create(createUserDto: CreateUserDto) {
-        console.log(createUserDto);
         const existingUser = await this.userModel.findOne({ email: createUserDto.email }).exec();
 
-        console.log(existingUser);
         if (existingUser) {
-            console.log('User already exists');
             throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
         } else {
-            console.log('User does not exist');
             createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-            console.log(createUserDto);
             const user = await this.userModel.create(createUserDto);
-            console.log(user);
             return user;
         }
     }
